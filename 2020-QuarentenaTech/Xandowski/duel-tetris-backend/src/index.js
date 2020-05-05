@@ -121,7 +121,6 @@ io.on("connection", (socket) => {
   gameState = searchAvailableRoom(gameState,playerId)
   gameState = setNewPlayer(gameState,socket,gameState.roomCounter)
   //emitGameStateLoop(socket,1000)
-  intervals[playerId] = setInterval(() => emitGameStateLoop(socket), 500);
   socket.on('disconnect', function() {
     console.log(`Player ${playerId} Disconnected`);
     gameState = playerDisconnect(gameState,playerId);
