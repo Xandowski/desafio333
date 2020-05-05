@@ -34,7 +34,7 @@ export default class Game extends React.Component{
     this.setState({
       scenarioDomElement:scenarioDomElement
     })
-    setTimeout(()=>{this.updateScenario()},200)
+    setTimeout(()=>{this.updateScenario()},30)
   }
 
   buildScenario(){
@@ -49,7 +49,7 @@ export default class Game extends React.Component{
             return (
               <div key={yKey}>
                 {yArray.map((xValue,xKey)=>{
-                  if(xValue === 1){
+                  if(xValue === 1 || xValue === 2){
                     return (
                       <span key={xKey} style={{background: "red"}}>{xValue}</span>
                     )
@@ -67,13 +67,17 @@ export default class Game extends React.Component{
   }
 
   render(){
+    if (this.state.gameState){
+      if (this.state.gameState.gameOver){
+        return <h1>Game over!</h1>
+      }
+    }
     return (
       <div>
         <div>You are Player {this.state.playerNumber}</div>
         <div>{this.state.anotherPlayerConnected ? `Player ${this.state.anotherPlayerConnected} connected` : ""}</div>
         <div>{this.state.gameState ? JSON.stringify(this.state.gameState.matrixPosition) : ''}</div>
         {this.state.scenarioDomElement}
-
         <div></div>
       </div>
     )
