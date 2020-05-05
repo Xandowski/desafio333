@@ -54,7 +54,20 @@ function pinLastPiece(playerScenario){
 
 function updateScenario(gameState,playerId){
   let player = gameState.players[playerId]
-  if (!player.collision){
+  if (player.gameOver){
+    return gameState
+  }
+  if (player.collision){
+      if(player.matrixPosition.y <= 1){
+        console.log('game over')
+        player.gameOver = true
+        return gameState
+      }
+      console.log('shut up and give me a new piece')
+      player.map = pinLastPiece(player.map)
+      gameState = giveANewPiece(gameState,playerId)
+    return gameState
+  }
     player.map = cleanMatrixGhost(player.map)
     for (let y = 0; y < player.map.length; y++){
       if (y === player.matrixPosition.y){
@@ -89,12 +102,6 @@ function updateScenario(gameState,playerId){
     } else {
       player.collision = true
     }
-  } else {
-    console.log('shut up and give me a new piece')
-    player.map = pinLastPiece(player.map)
-    gameState = giveANewPiece(gameState,playerId)
-    
-  }
   return gameState
 }
 
@@ -114,7 +121,7 @@ io.on("connection", (socket) => {
   gameState = searchAvailableRoom(gameState,playerId)
   gameState = setNewPlayer(gameState,socket,gameState.roomCounter)
   //emitGameStateLoop(socket,1000)
-  intervals[playerId] = setInterval(() => emitGameStateLoop(socket), 1000);
+  intervals[playerId] = setInterval(() => emitGameStateLoop(socket), 500);
   socket.on('disconnect', function() {
     console.log(`Player ${playerId} Disconnected`);
     gameState = playerDisconnect(gameState,playerId);
