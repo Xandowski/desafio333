@@ -49,8 +49,13 @@ export default class Game extends React.Component{
             return (
               <div key={yKey}>
                 {yArray.map((xValue,xKey)=>{
+                  if(xValue === 1){
+                    return (
+                      <span key={xKey} style={{background: "red"}}>{xValue}</span>
+                    )
+                  }
                   return (
-                  <span key={xKey}>{xValue}</span>
+                    <span key={xKey} style={{background: "black"}}>{xValue}</span>
                   )
                 })}
               </div>
@@ -68,7 +73,7 @@ export default class Game extends React.Component{
         <div>{this.state.anotherPlayerConnected ? `Player ${this.state.anotherPlayerConnected} connected` : ""}</div>
         <div>{this.state.gameState ? JSON.stringify(this.state.gameState.matrixPosition) : ''}</div>
         {this.state.scenarioDomElement}
-        
+
         <div></div>
       </div>
     )
