@@ -19,7 +19,6 @@ function emitGameStateLoop(socket){
   if (gameState.players[socket.id]){
     gameState = updateScenario(gameState,socket.id)
     socket.emit("gameState", gameState.players[socket.id])
-    //setTimeout(()=>{emitGameStateLoop(socket)},interval)
   }
 }
 
@@ -32,7 +31,6 @@ io.on("connection", (socket) => {
   socket.broadcast.emit('playerConnect', playerId);
   gameState = searchAvailableRoom(gameState,playerId)
   gameState = setNewPlayer(gameState,socket,gameState.roomCounter)
-  //emitGameStateLoop(socket,1000)
   intervals[playerId] = setInterval(() => emitGameStateLoop(socket), 500);
   socket.on('disconnect', function() {
     console.log(`Player ${playerId} Disconnected`);
